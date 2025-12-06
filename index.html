@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Simple Money Tracker</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1>Simple Money Tracker</h1>
+            <div class="header-actions">
+                <button id="darkModeToggle" class="btn btn-icon" title="Toggle Dark Mode">
+                    <span class="icon-sun">☀️</span>
+                    <span class="icon-moon">🌙</span>
+                </button>
+                <button id="addTransactionBtn" class="btn btn-primary">+ Add Transaction</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="dashboard">
+                <div class="summary-cards">
+                    <div class="card balance-card">
+                        <h3>Current Balance</h3>
+                        <p id="balance" class="amount">$0.00</p>
+                    </div>
+                    <div class="card income-card">
+                        <h3>Total Income</h3>
+                        <p id="totalIncome" class="amount positive">$0.00</p>
+                    </div>
+                    <div class="card expense-card">
+                        <h3>Total Expenses</h3>
+                        <p id="totalExpenses" class="amount negative">$0.00</p>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-wrapper">
+                        <h3>Expenses by Category</h3>
+                        <canvas id="pieChart" width="300" height="300"></canvas>
+                        <div id="pieChartLegend" class="chart-legend"></div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <h3>Income vs Expenses</h3>
+                        <canvas id="barChart" width="300" height="300"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="transactions-section">
+                <div class="transactions-header">
+                    <h2>Transactions</h2>
+                    <div class="transactions-actions">
+                        <button id="exportCsvBtn" class="btn btn-secondary">Export CSV</button>
+                        <label class="btn btn-secondary import-btn">
+                            Import CSV
+                            <input type="file" id="importCsvInput" accept=".csv" hidden>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filters-container">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search transactions...">
+                    </div>
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label for="filterCategory">Category</label>
+                            <select id="filterCategory">
+                                <option value="">All Categories</option>
+                                <option value="salary">Salary</option>
+                                <option value="freelance">Freelance</option>
+                                <option value="investment">Investment</option>
+                                <option value="food">Food</option>
+                                <option value="transport">Transport</option>
+                                <option value="utilities">Utilities</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="health">Health</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterDateFrom">From</label>
+                            <input type="date" id="filterDateFrom">
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterDateTo">To</label>
+                            <input type="date" id="filterDateTo">
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterAmountMin">Min Amount</label>
+                            <input type="number" id="filterAmountMin" placeholder="0">
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterAmountMax">Max Amount</label>
+                            <input type="number" id="filterAmountMax" placeholder="0">
+                        </div>
+                        <button id="clearFiltersBtn" class="btn btn-secondary">Clear Filters</button>
+                    </div>
+                </div>
+
+                <div class="transactions-list">
+                    <table id="transactionsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsBody">
+                        </tbody>
+                    </table>
+                    <p id="noTransactions" class="no-data">No transactions found. Add your first transaction!</p>
+                </div>
+            </section>
+        </main>
+
+        <div id="transactionModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Add Transaction</h2>
+                    <button class="modal-close" id="closeModal">&times;</button>
+                </div>
+                <form id="transactionForm">
+                    <input type="hidden" id="transactionId">
+                    <div class="form-group">
+                        <label for="transactionType">Type</label>
+                        <div class="type-toggle">
+                            <button type="button" class="type-btn active" data-type="income">Income</button>
+                            <button type="button" class="type-btn" data-type="expense">Expense</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionDate">Date</label>
+                        <input type="date" id="transactionDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionDescription">Description</label>
+                        <input type="text" id="transactionDescription" placeholder="Enter description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionAmount">Amount</label>
+                        <input type="number" id="transactionAmount" placeholder="0.00" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionCategory">Category</label>
+                        <select id="transactionCategory" required>
+                            <option value="">Select Category</option>
+                            <optgroup label="Income">
+                                <option value="salary">Salary</option>
+                                <option value="freelance">Freelance</option>
+                                <option value="investment">Investment</option>
+                                <option value="other-income">Other Income</option>
+                            </optgroup>
+                            <optgroup label="Expense">
+                                <option value="food">Food</option>
+                                <option value="transport">Transport</option>
+                                <option value="utilities">Utilities</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="health">Health</option>
+                                <option value="other">Other</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Transaction</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="snackbar" class="snackbar">
+            <span id="snackbarMessage"></span>
+            <button id="undoBtn" class="btn btn-undo">Undo</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

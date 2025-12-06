@@ -1,0 +1,82 @@
+Create a fully working “Simple Money Tracker” website using ONLY HTML, CSS, and JavaScript (no frameworks, no libraries). The website should be clean, responsive, and allow users to input, track, and manage their expenses and income. Include all the features listed below.
+
+-------------------------------------------
+🔹 CORE FEATURES (MUST-HAVE)
+-------------------------------------------
+- Add new transactions (income or expense)
+- User inputs:
+    • Date
+    • Description
+    • Amount
+    • Category
+- Edit transactions
+- Delete transactions
+- Show current balance
+- Show total income
+- Show total expenses
+- Transaction list/table
+- Search bar to find transactions
+- Filters for:
+    • Date range
+    • Category
+    • Amount
+- Save all data to localStorage so it stays after page refresh
+
+-------------------------------------------
+🔹 PAGES / SECTIONS
+-------------------------------------------
+1. Dashboard
+    - Balance display
+    - Total income & total expenses
+    - Summary cards
+2. Add Transaction Form
+3. Transaction List Page
+4. Settings Section (optional)
+    - Export CSV
+    - Import CSV
+
+-------------------------------------------
+🔹 DATA MODEL
+-------------------------------------------
+Each transaction must have:
+- id
+- date
+- description
+- amount
+- category
+
+-------------------------------------------
+🔹 UI ELEMENTS
+-------------------------------------------
+- Header with app name
+- Add Transaction button
+- Forms with inputs for: date, amount, description, category
+- Summary cards for income, expenses, balance
+- Table or list showing all transactions
+- Responsive design (mobile-friendly)
+
+-------------------------------------------
+🔹 OPTIONAL FEATURES (ADD IF POSSIBLE)
+-------------------------------------------
+- Charts (simple bar or pie chart using only vanilla JS + canvas)
+- Dark mode
+- Budget goal feature (optional)
+- Undo delete (snackbar)
+
+-------------------------------------------
+🔹 TECH REQUIREMENTS
+-------------------------------------------
+- Use ONLY HTML, CSS, and JavaScript
+- No frameworks (no React, no Tailwind, no Bootstrap)
+- Clean, readable code with comments
+- Use localStorage for all data saving
+- Must work on both desktop and mobile
+- Organize files like this:
+    • index.html
+    • style.css
+    • script.js
+
+-------------------------------------------
+🎯 GOAL
+-------------------------------------------
+Produce a complete, working website that allows users to input, track, search, filter, edit, and delete transactions, while showing balance and summaries. All features must work in the browser without backend.
